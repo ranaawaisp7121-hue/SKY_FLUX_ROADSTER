@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#000814" />
+  <meta name="description" content="SKYFLUX: ROCKET ROAD — A premium 3D futuristic flying car endless runner game. Race, jump, boost and fly through a cyberpunk highway at breakneck speed." />
+  <meta name="keywords" content="3D game, flying car, endless runner, Three.js, WebGL, racing game, futuristic" />
+  <meta property="og:title" content="SKYFLUX: ROCKET ROAD" />
+  <meta property="og:description" content="A premium 3D futuristic flying car endless runner game." />
+  <meta property="og:type" content="website" />
+  <title>SKYFLUX: ROCKET ROAD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+  <!-- WebGL fallback -->
+  <div id="webgl-fallback" class="hidden">
+    <div class="fallback-content">
+      <h1>⚡ SKYFLUX: ROCKET ROAD</h1>
+      <p>Your browser does not support WebGL, which is required to play this game.</p>
+      <p>Please try a modern browser such as Chrome, Firefox, Edge, or Safari.</p>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-bg"></div>
+    <div class="loading-content">
+      <div class="loading-logo">
+        <span class="logo-sky">SKY</span><span class="logo-flux">FLUX</span>
+      </div>
+      <div class="loading-subtitle">ROCKET ROAD</div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loading-bar"></div>
+      </div>
+      <div class="loading-text" id="loading-text">Initializing engine...</div>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="main-menu" class="screen hidden">
+    <div class="menu-bg-overlay"></div>
+    <div class="menu-content">
+      <div class="menu-logo">
+        <div class="logo-main"><span class="logo-sky">SKY</span><span class="logo-flux">FLUX</span></div>
+        <div class="logo-sub">ROCKET ROAD</div>
+      </div>
+
+      <div class="menu-best-score">
+        <span class="score-label">BEST SCORE</span>
+        <span class="score-value" id="menu-best-score">0</span>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="btn-play" class="btn btn-primary" aria-label="Play game">
+          <span class="btn-icon">▶</span> PLAY
+        </button>
+        <button id="btn-how-to-play" class="btn btn-secondary" aria-label="How to play">
+          HOW TO PLAY
+        </button>
+        <button id="btn-settings" class="btn btn-secondary" aria-label="Settings">
+          SETTINGS
+        </button>
+      </div>
+
+      <div class="menu-credit">Developed by M.AWAIS</div>
+    </div>
+  </div>
+
+  <!-- How to Play Screen -->
+  <div id="howtoplay-screen" class="screen hidden">
+    <div class="overlay-panel">
+      <h2 class="panel-title">HOW TO PLAY</h2>
+      <div class="controls-grid">
+        <div class="controls-section">
+          <h3>⌨️ Keyboard</h3>
+          <ul>
+            <li><kbd>A</kbd> / <kbd>←</kbd> Move Left</li>
+            <li><kbd>D</kbd> / <kbd>→</kbd> Move Right</li>
+            <li><kbd>W</kbd> / <kbd>↑</kbd> Accelerate</li>
+            <li><kbd>S</kbd> / <kbd>↓</kbd> Brake</li>
+            <li><kbd>SPACE</kbd> Jump / Fly</li>
+            <li><kbd>SHIFT</kbd> Boost</li>
+            <li><kbd>P</kbd> / <kbd>ESC</kbd> Pause</li>
+            <li><kbd>R</kbd> Restart</li>
+          </ul>
+        </div>
+        <div class="controls-section">
+          <h3>📱 Mobile / Touch</h3>
+          <ul>
+            <li>← → On-screen buttons to steer</li>
+            <li>⬆ Jump / Flight button</li>
+            <li>⚡ Boost button</li>
+            <li>⏸ Pause button</li>
+            <li>Swipe left/right to change lanes</li>
+          </ul>
+        </div>
+        <div class="controls-section">
+          <h3>🏆 Scoring</h3>
+          <ul>
+            <li>Distance earns base points</li>
+            <li>Collect energy orbs for bonus</li>
+            <li>Near misses give combo points</li>
+            <li>Aerial flips earn trick score</li>
+            <li>Speed boosts your multiplier</li>
+          </ul>
+        </div>
+        <div class="controls-section">
+          <h3>⚠️ Obstacles</h3>
+          <ul>
+            <li>Road barriers — swerve around</li>
+            <li>Futuristic traffic — change lanes</li>
+            <li>Energy gates — fly through</li>
+            <li>Road gaps — jump or fly over</li>
+            <li>Low bridges — duck under</li>
+          </ul>
+        </div>
+      </div>
+      <button id="btn-howtoplay-back" class="btn btn-secondary">← BACK</button>
+    </div>
+  </div>
+
+  <!-- Settings Screen -->
+  <div id="settings-screen" class="screen hidden">
+    <div class="overlay-panel">
+      <h2 class="panel-title">SETTINGS</h2>
+      <div class="settings-list">
+        <div class="setting-row">
+          <label for="graphics-quality">Graphics Quality</label>
+          <select id="graphics-quality" class="setting-select">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="sound-toggle">Sound Effects</label>
+          <button id="sound-toggle" class="btn btn-toggle active" aria-pressed="true">ON</button>
+        </div>
+        <div class="setting-row">
+          <label for="music-toggle">Music</label>
+          <button id="music-toggle" class="btn btn-toggle active" aria-pressed="true">ON</button>
+        </div>
+        <div class="setting-row">
+          <label for="volume-slider">Volume</label>
+          <input type="range" id="volume-slider" min="0" max="100" value="70" class="setting-range" />
+        </div>
+        <div class="setting-row">
+          <label for="reduced-motion">Reduced Motion</label>
+          <button id="reduced-motion" class="btn btn-toggle" aria-pressed="false">OFF</button>
+        </div>
+      </div>
+      <button id="btn-settings-back" class="btn btn-secondary">← BACK</button>
+    </div>
+  </div>
+
+  <!-- HUD (Heads-Up Display) -->
+  <div id="hud" class="hidden">
+    <div class="hud-top">
+      <div class="hud-score">
+        <div class="hud-label">SCORE</div>
+        <div class="hud-value" id="hud-score">0</div>
+      </div>
+      <div class="hud-distance">
+        <div class="hud-label">DISTANCE</div>
+        <div class="hud-value" id="hud-distance">0 m</div>
+      </div>
+      <div class="hud-speed">
+        <div class="hud-label">SPEED</div>
+        <div class="hud-value" id="hud-speed">0 km/h</div>
+      </div>
+    </div>
+
+    <div class="hud-top-right">
+      <button id="btn-pause" class="hud-btn" aria-label="Pause">⏸</button>
+    </div>
+
+    <div class="hud-boost">
+      <div class="hud-label">BOOST</div>
+      <div class="boost-bar-wrap">
+        <div class="boost-bar" id="boost-bar"></div>
+      </div>
+    </div>
+
+    <div class="hud-combo" id="hud-combo"></div>
+
+    <div class="hud-orbs">
+      <span class="orb-icon">◈</span>
+      <span id="hud-orbs">0</span>
+    </div>
+  </div>
+
+  <!-- Mobile Controls -->
+  <div id="mobile-controls" class="hidden">
+    <div class="mobile-left">
+      <button id="btn-left" class="mobile-btn" aria-label="Move left">◀</button>
+    </div>
+    <div class="mobile-center">
+      <button id="btn-jump" class="mobile-btn mobile-btn-jump" aria-label="Jump">⬆</button>
+      <button id="btn-boost-mobile" class="mobile-btn mobile-btn-boost" aria-label="Boost">⚡</button>
+    </div>
+    <div class="mobile-right">
+      <button id="btn-right" class="mobile-btn" aria-label="Move right">▶</button>
+    </div>
+  </div>
+
+  <!-- Intro Skip -->
+  <div id="intro-skip" class="hidden">
+    <button id="btn-skip-intro" class="skip-btn">SKIP INTRO ▶▶</button>
+  </div>
+
+  <!-- Pause Menu -->
+  <div id="pause-menu" class="screen hidden">
+    <div class="overlay-panel compact">
+      <h2 class="panel-title">PAUSED</h2>
+      <div class="pause-score">
+        Score: <span id="pause-score">0</span>
+      </div>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="btn btn-primary">▶ RESUME</button>
+        <button id="btn-restart-pause" class="btn btn-secondary">↺ RESTART</button>
+        <button id="btn-menu-pause" class="btn btn-secondary">⌂ MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="gameover-screen" class="screen hidden">
+    <div class="overlay-panel compact">
+      <h2 class="panel-title gameover-title">GAME OVER</h2>
+      <div class="gameover-stats">
+        <div class="stat-row">
+          <span class="stat-label">SCORE</span>
+          <span class="stat-value" id="go-score">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">DISTANCE</span>
+          <span class="stat-value" id="go-distance">0 m</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">ORBS</span>
+          <span class="stat-value" id="go-orbs">0</span>
+        </div>
+        <div class="stat-row best-score-row">
+          <span class="stat-label">BEST SCORE</span>
+          <span class="stat-value best" id="go-best">0</span>
+        </div>
+        <div class="new-record hidden" id="new-record">🏆 NEW RECORD!</div>
+      </div>
+      <div class="menu-buttons">
+        <button id="btn-restart-go" class="btn btn-primary">↺ PLAY AGAIN</button>
+        <button id="btn-menu-go" class="btn btn-secondary">⌂ MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas container -->
+  <div id="canvas-container">
+    <canvas id="game-canvas"></canvas>
+  </div>
+
+  <!-- Ad Placeholder (outside gameplay) -->
+  <aside id="ad-placeholder" aria-label="Advertisement area" role="complementary">
+    <!-- Google AdSense integration point — insert ad tag here after approval -->
+    <div class="ad-label">Advertisement</div>
+  </aside>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
